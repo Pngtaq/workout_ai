@@ -15,7 +15,7 @@ import { getUserInfo } from "@/services/user";
 export default function Navigation() {
   const pathName = usePathname();
   const { data, error } = useQuery({
-    queryKey: ["user"], // unique key for caching
+    queryKey: ["users"], // unique key for caching
     queryFn: getUserInfo, // your fetch function
   });
   // if (isLoading) return <p>Loading...</p>;

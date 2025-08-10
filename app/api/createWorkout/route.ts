@@ -1,3 +1,4 @@
+import { auth } from "@/lib/auth";
 import { User } from "@/schemas/User";
 
 import { NextRequest, NextResponse } from "next/server";
@@ -20,12 +21,13 @@ export async function GET() {
 
 export async function PATCH(req: NextRequest) {
   try {
-    // const session = await auth();
-    const session = { user: { email: "raisonsalvador.dev@gmail.com" } };
+    const session = await auth();
+    console.log(session?.user?.email);
     if (!session)
       return NextResponse.json({ message: "Not authorized" }, { status: 401 });
     const body = await req.json();
     const user = await User.findOne({ email: session.user?.email });
+
     if (!user)
       return NextResponse.json({ message: "User not found" }, { status: 401 });
 

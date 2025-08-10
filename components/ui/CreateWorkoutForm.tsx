@@ -58,7 +58,7 @@ const CreateWorkOutForm = ({
           <select
             {...register("difficulty")}
             id="difficulty"
-            name="ifficulty"
+            name="difficulty"
             className="focus:outline-0"
             defaultValue="light"
           >

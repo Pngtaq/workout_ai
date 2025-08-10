@@ -6,7 +6,8 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import Typewriter from "typewriter-effect";
 import { TCreateWorkoutProps, TWorkout } from "@/types/next-auth";
-import { saveWorkout } from "@/services/helper";
+
+import { useSaveWorkout } from "@/hooks/workoutHooks";
 
 export default function Page() {
   const [text, setText] = useState<TCreateWorkoutProps>();
@@ -73,7 +74,6 @@ ${day.day}
     setDays(parsed.days);
     setDietTips(parsed.dietTips);
     setOverview(parsed.overview);
-    console.log(plan);
   };
   const submitForm = handleSubmit((data) => {
     setText(data);
@@ -85,11 +85,10 @@ ${day.day}
     cohereAI(payload);
   });
 
+  const saveWorkout = useSaveWorkout();
   const submitWorkout = () => {
-    console.log("Button clicked!", plan);
-    alert("domo");
     if (plan) {
-      saveWorkout(plan);
+      saveWorkout.mutate(plan);
     } else {
       alert("No workout plan to save.");
     }
