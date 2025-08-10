@@ -42,4 +42,5 @@ export interface TUserProfileFormData {
   days?: string;
   difficulty?: string;
   diet?: string;
+  workout: TWorkout;
 }

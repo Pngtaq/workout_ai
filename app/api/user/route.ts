@@ -6,14 +6,18 @@ import { getBMICategory } from "@/services/helper";
 
 export async function GET() {
   try {
-    // const session = await auth();
-    const session = { user: { email: "raisonsalvador.dev@gmail.com" } };
+    const session = await auth();
+    // const session = { user: { email: "raisonsalvador.dev@gmail.com" } };
+    if (!session) return NextResponse.json({ data: "" }, { status: 200 });
     await connectDb();
 
-    if (!session || !session.user)
+    if (!session.user)
       return NextResponse.json({ error: "Session not found" }, { status: 401 });
 
-    const user = await User.findOne({ email: session?.user?.email }).lean();
+    const user = await User.findOne(
+      { email: session.user.email },
+      { _id: 0, email: 0 }
+    ).lean();
 
     if (!user)
       return NextResponse.json({ error: "User not found" }, { status: 401 });

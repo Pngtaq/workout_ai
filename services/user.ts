@@ -1,6 +1,8 @@
 import { auth } from "@/lib/auth";
 import { connectDb } from "@/lib/db";
 import { User } from "@/schemas/User";
+import { error } from "console";
+import { cookies } from "next/headers";
 
 type TUserProps = {
   firstName: string;
@@ -9,34 +11,14 @@ type TUserProps = {
   image: string;
 };
 
-export async function createUser({
-  firstName,
-  lastName,
-  email,
-  image,
-}: TUserProps) {
-  await connectDb();
-  const user = await User.create({
-    firstName: firstName,
-    lastName: lastName,
-    email: email,
-    image: image,
-  });
-  await user.save();
-  return user;
-}
-
 export async function getUserInfo() {
-  try {
-    const session = await auth();
-    if (!session || !session.user) throw new Error("Session not found");
-    await connectDb();
-    const user = await User.findOne({ email: session.user.email }).lean();
-    const plainUser = JSON.parse(JSON.stringify(user));
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
-    return plainUser;
-  } catch (error) {
-    console.log("Get error: ", error);
-    return null;
-  }
+  const res = await fetch(`${baseUrl}/api/user`, {
+    method: "GET",
+  });
+
+  if (!res.ok) throw new Error(`Failed to fetch: ${res.status}`);
+  const data = await res.json();
+  return data.data;
 }

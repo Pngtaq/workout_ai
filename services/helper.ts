@@ -56,7 +56,7 @@ export async function saveWorkout(data: TWorkout) {
 
 export async function getWorkout() {
   try {
-    const res = await fetch("/api/createWorkout", {
+    const res = await fetch(`${process.env.NEXTATUH_URL}/api/createWorkout`, {
       method: "GET",
     });
     if (!res.ok) throw new Error("Failed to fetch workout");

@@ -1,4 +1,4 @@
-import NavigationWrapper from "@/components/ui/NavigationWrapper";
+import Navigation from "@/components/ui/Navigation";
 
 // app/(auth)/layout.tsx
 export default function AuthLayout({
@@ -8,7 +8,7 @@ export default function AuthLayout({
 }) {
   return (
     <div className="flex">
-      <NavigationWrapper />
+      <Navigation />
       <main className="flex-1">{children}</main>
     </div>
   );
