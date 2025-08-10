@@ -8,21 +8,18 @@ import { navData } from "@/data/navData";
 import NavLink from "./NavLink";
 import { usePathname } from "next/navigation";
 
-import { TUserProfileFormData } from "@/types/next-auth";
 import { useQuery } from "@tanstack/react-query";
 
 import { getUserInfo } from "@/services/user";
-interface NavigationProps {
-  session: TUserProfileFormData | null;
-}
 
 export default function Navigation() {
   const pathName = usePathname();
-  const { data, error, isLoading } = useQuery({
-    queryKey: ["users"], // unique key for caching
+  const { data, error } = useQuery({
+    queryKey: ["user"], // unique key for caching
     queryFn: getUserInfo, // your fetch function
   });
-
+  // if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>Error loading users</p>;
   const session = data;
   return (
     <div className="flex items-start flex-col justify-between h-screen py-6 sm:min-w-[300px] max-w-[70px] shadow-lg shadow-gray-200 rounded-2xl px-4">

@@ -3,7 +3,7 @@ import { profileInput } from "@/data/profileInput";
 import UpdateProfileInput from "./UpdateProfileInput";
 import { useForm } from "react-hook-form";
 import { TUserProfileFormData } from "@/types/next-auth";
-import { updateUserProfile } from "@/services/helper";
+import { useUpdateUser } from "@/hooks/userHooks";
 
 export default function UpdateProfileForm() {
   const { reset, register, handleSubmit } = useForm<TUserProfileFormData>({
@@ -11,10 +11,13 @@ export default function UpdateProfileForm() {
       age: 0,
     },
   });
+  const updateUser = useUpdateUser();
   const onSubmit = handleSubmit((data) => {
-    updateUserProfile(data)
-      .then(() => reset())
-      .catch((error) => console.log(error));
+    updateUser.mutate(data, {
+      onSuccess: () => {
+        reset();
+      },
+    });
   });
 
   return (

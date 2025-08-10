@@ -1,4 +1,6 @@
 import { TUserProfileFormData, TWorkout } from "@/types/next-auth";
+import { useQuery } from "@tanstack/react-query";
+
 const bmiCategories = [
   { min: 0, max: 18.4, category: "Underweight" },
   { min: 18.5, max: 24.9, category: "Normal weight" },
