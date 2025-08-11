@@ -20,7 +20,7 @@ export default function Navigation() {
   });
   // if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Error loading users</p>;
-  console.log(user);
+
   return (
     <div className="flex items-start flex-col justify-between h-screen py-6 sm:min-w-[300px] max-w-[70px] shadow-lg shadow-gray-200 rounded-2xl px-4">
       <div className="flex flex-col gap-y-10  w-full">
