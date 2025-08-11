@@ -14,13 +14,13 @@ import { getUserInfo } from "@/services/user";
 
 export default function Navigation() {
   const pathName = usePathname();
-  const { data, error } = useQuery({
-    queryKey: ["users"], // unique key for caching
+  const { data: user, error } = useQuery({
+    queryKey: ["user"], // unique key for caching
     queryFn: getUserInfo, // your fetch function
   });
   // if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Error loading users</p>;
-  const session = data;
+  console.log(user);
   return (
     <div className="flex items-start flex-col justify-between h-screen py-6 sm:min-w-[300px] max-w-[70px] shadow-lg shadow-gray-200 rounded-2xl px-4">
       <div className="flex flex-col gap-y-10  w-full">
@@ -36,7 +36,7 @@ export default function Navigation() {
             <p className="text-[11px] gap-x-1 hidden sm:inline space-x-1">
               <span>Your state:</span>
               <span className="bg-violet-600 font-semibold text-white rounded-full py-[0.7px] px-2 hidden sm:inline">
-                {session?.bmiEquivalent || "Unkown"}
+                {user?.bmiEquivalent || "Unkown"}
               </span>
             </p>
           </div>
@@ -56,18 +56,18 @@ export default function Navigation() {
         </div>
       </div>
 
-      {session?.firstName ? (
+      {user?.firstName ? (
         <div className="space-y-4 border-gray-200 border-t-1 pt-8 w-full text-sm tracking-wider ">
           <div className="flex items-center gap-x-4">
             <Image
-              src={"/me.jpg"}
+              src={user.image || "/icons/user-dark.png"}
               width={40}
               height={30}
               alt="user"
               referrerPolicy="no-referrer"
               className="rounded-full border-2 border-violet-500"
             />
-            <p className="hidden sm:inline">{session.firstName}</p>
+            <p className="hidden sm:inline">{user.firstName}</p>
           </div>
           <div>
             <form action={signOutAction}>
