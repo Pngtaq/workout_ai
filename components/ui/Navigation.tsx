@@ -60,7 +60,7 @@ export default function Navigation() {
         <div className="space-y-4 border-gray-200 border-t-1 pt-8 w-full text-sm tracking-wider ">
           <div className="flex items-center gap-x-4">
             <Image
-              src={session.image || "/default-user.png"}
+              src={"/me.jpg"}
               width={40}
               height={30}
               alt="user"

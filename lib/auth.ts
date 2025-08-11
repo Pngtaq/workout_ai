@@ -23,26 +23,31 @@ const authConfig = {
       clientSecret: process.env.AUTH_GOOGLE_SECRET,
     }),
   ],
+  callbacks: {
+    authorized({ auth }: { auth: Tprofile }) {
+      console.log(auth);
+      return !!auth?.user;
+    },
+    async signIn({ profile }: { profile?: Tprofile }) {
+      if (!profile) return false;
 
-  async signIn({ profile }: { profile?: Tprofile }) {
-    if (!profile) return false;
+      const typedProfile = profile as Tprofile;
 
-    const typedProfile = profile as Tprofile;
+      const res = await fetch(`${process.env.NEXTAUTH_URL}/api/user`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          firstName: typedProfile.given_name,
+          lastName: typedProfile.family_name,
+          email: typedProfile.email,
+          image: typedProfile.picture,
+        }),
+      });
 
-    const res = await fetch(`${process.env.NEXTAUTH_URL}/api/user`, {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({
-        firstName: typedProfile.given_name,
-        lastName: typedProfile.family_name,
-        email: typedProfile.email,
-        image: typedProfile.picture,
-      }),
-    });
-
-    if (!res.ok) throw new Error(`Error: ${res.status}`);
-    console.log(typedProfile);
-    return true;
+      if (!res.ok) throw new Error(`Error: ${res.status}`);
+      console.log(typedProfile);
+      return true;
+    },
   },
 
   // pages: { signIn: "/login", signOut: "/logout" },
