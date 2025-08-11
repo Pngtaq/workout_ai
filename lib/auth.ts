@@ -16,6 +16,14 @@ type Tprofile = {
   iat: number;
   exp: number;
 };
+
+type TUser = {
+  user: {
+    name: string;
+    email: string;
+    image: string;
+  };
+};
 const authConfig = {
   providers: [
     Google({
@@ -24,8 +32,7 @@ const authConfig = {
     }),
   ],
   callbacks: {
-    authorized({ auth }: { auth: Tprofile }) {
-      console.log(auth);
+    authorized({ auth }: { auth?: TUser }) {
       return !!auth?.user;
     },
     async signIn({ profile }: { profile?: Tprofile }) {
@@ -38,7 +45,7 @@ const authConfig = {
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
           firstName: typedProfile.given_name,
-          lastName: typedProfile.family_name,
+          lastName: typedProfile.family_name || typedProfile.given_name,
           email: typedProfile.email,
           image: typedProfile.picture,
         }),
