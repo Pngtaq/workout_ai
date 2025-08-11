@@ -1,4 +1,4 @@
-import NextAuth from "next-auth";
+import NextAuth, { type NextAuthConfig } from "next-auth";
 import Google from "next-auth/providers/google";
 
 type Tprofile = {
@@ -17,28 +17,29 @@ type Tprofile = {
   exp: number;
 };
 
-type TUser = {
-  user: {
-    name: string;
-    email: string;
-    image: string;
-  };
-};
-const authConfig = {
+// type TUser = {
+//   user: {
+//     name?: string | null;
+//     email?: string | null;
+//     image?: string | null;
+//   };
+// } | null;
+
+const authConfig: NextAuthConfig = {
   providers: [
     Google({
-      clientId: process.env.AUTH_GOOGLE_ID,
-      clientSecret: process.env.AUTH_GOOGLE_SECRET,
+      clientId: process.env.AUTH_GOOGLE_ID!,
+      clientSecret: process.env.AUTH_GOOGLE_SECRET!,
     }),
   ],
+
   callbacks: {
-    authorized({ auth }: { auth?: TUser }) {
+    authorized({ auth }) {
       return !!auth?.user;
     },
-    async signIn({ profile }: { profile?: Tprofile }) {
-      if (!profile) return false;
-
-      const typedProfile = profile as Tprofile;
+    async signIn({ profile }) {
+      const typedProfile = profile as Tprofile | undefined;
+      if (!typedProfile) return false;
 
       const res = await fetch(`${process.env.NEXTAUTH_URL}/api/user`, {
         method: "POST",
@@ -62,7 +63,6 @@ const authConfig = {
 
 export const {
   auth,
-  //Sign in and signout function to export in your custom login and logout button
   signIn,
   signOut,
   handlers: { GET, POST },
