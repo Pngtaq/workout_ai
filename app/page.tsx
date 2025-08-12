@@ -1,3 +1,7 @@
+"use client";
+import { motion } from "framer-motion";
+import { Dumbbell, Brain, Sparkles } from "lucide-react";
+
 function FeatureCard({
   icon,
   title,
