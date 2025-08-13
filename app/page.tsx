@@ -24,12 +24,12 @@ export default function HomePage() {
           className="text-lg md:text-xl text-violet-100 max-w-2xl mb-8"
         >
           Workout AI helps you create personalized fitness plans using
-          artificial intelligence — tailored to your goals, fitness level, and
-          lifestyle.
+          artificial intelligence — tailored to your equipment, fitness level,
+          and lifestyle.
         </motion.p>
 
         <motion.a
-          href="#features"
+          href="/dashboard"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           className="inline-flex items-center gap-2 bg-white text-violet-700 px-6 py-3 rounded-full font-semibold shadow-lg transition-colors hover:bg-violet-100"
@@ -75,7 +75,7 @@ export default function HomePage() {
       </section>
 
       {/* CTA */}
-      <section className="bg-violet-600 px-6 py-12 md:py-20">
+      {/* <section className="bg-violet-600 px-6 py-12 md:py-20">
         <div className="max-w-4xl mx-auto text-center">
           <motion.h3
             initial={{ opacity: 0, y: 20 }}
@@ -95,7 +95,7 @@ export default function HomePage() {
             Sign Up Free
           </motion.a>
         </div>
-      </section>
+      </section> */}
 
       {/* Footer */}
       <footer className="bg-violet-800 text-violet-200 py-6 text-center text-sm">
