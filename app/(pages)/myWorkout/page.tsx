@@ -1,27 +1,33 @@
 "use client";
 
 import { useGetWorkout } from "@/hooks/workoutHooks";
+import { motion } from "framer-motion";
+
 export default function Page() {
   const { data, isLoading, error } = useGetWorkout();
   console.log(data);
-  return (
-    <div>
-      <div>
-        <h1>Overview</h1>
-        <p>Days per week: </p>
-        <p>Duration: </p>
-        <p>Focus: </p>
-      </div>
 
-      <div>
-        <h1>Diet Tips</h1>
-        <p>Hydration: </p>
-        <p>Meals: //component </p>
-        <p>Post workout//component </p>
-        <p>Pre workout//component </p>
-      </div>
+  if (isLoading) {
+    return (
+      <p className="text-center text-gray-500 py-10 animate-pulse">
+        Loading workout plan...
+      </p>
+    );
+  }
 
-      <div>{/* <Workout ></Workout> */}</div>
-    </div>
-  );
+  if (error) {
+    return (
+      <p className="text-center text-red-500 py-10">
+        Failed to load workout plan.
+      </p>
+    );
+  }
+
+  if (!data) {
+    return (
+      <p className="text-center text-gray-500 py-10">No workout data found.</p>
+    );
+  }
+
+  return <div></div>;
 }

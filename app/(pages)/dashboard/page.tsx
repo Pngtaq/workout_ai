@@ -1,12 +1,3 @@
-const page = async () => {
-  return (
-    <div className="flex">
-      <h1 className="text-sm font-extralight bg-violet-600 text-white p-1 text-center rounded-md justify-self-start">
-        Create Workout
-      </h1>
-      Dashboard
-    </div>
-  );
-};
-
-export default page;
+export default function page() {
+  return <div>dashboard</div>;
+}
