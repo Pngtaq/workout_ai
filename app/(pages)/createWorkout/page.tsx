@@ -87,6 +87,8 @@ ${day.day}
 
   const saveWorkout = useSaveWorkout();
   const submitWorkout = () => {
+    alert("domo");
+    console.log(plan);
     if (plan) {
       saveWorkout.mutate(plan);
     } else {

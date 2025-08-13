@@ -1,5 +1,5 @@
 import { TWorkout } from "@/types/next-auth";
-import { useQueryClient, useMutation } from "@tanstack/react-query";
+import { useQueryClient, useMutation, useQuery } from "@tanstack/react-query";
 
 export function useSaveWorkout() {
   const queryClient = useQueryClient();
@@ -8,7 +8,7 @@ export function useSaveWorkout() {
     mutationFn: (data: TWorkout) =>
       fetch("/api/createWorkout", {
         method: "PATCH",
-        body: JSON.stringify(data),
+        body: JSON.stringify({ workout: data }),
         headers: { "Content-Type": "application/json" },
       }),
     onSuccess: () => {
@@ -18,17 +18,12 @@ export function useSaveWorkout() {
 }
 
 export function useGetWorkout() {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: (data: TWorkout) =>
-      fetch("/api/createWorkout", {
-        method: "PATCH",
-        body: JSON.stringify(data),
-        headers: { "Content-Type": "application/json" },
-      }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["workout"] });
+  return useQuery({
+    queryKey: ["workout"],
+    queryFn: async () => {
+      const res = await fetch("/api/createWorkout", { method: "GET" });
+      if (!res.ok) throw new Error("Failed to fetch workout");
+      return res.json();
     },
   });
 }

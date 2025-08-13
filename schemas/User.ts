@@ -39,5 +39,4 @@ const UserSchema = new mongoose.Schema({
   },
 });
 
-// ✅ Model name should be singular and capitalized: "User"
 export const User = mongoose.models.User || mongoose.model("User", UserSchema);
