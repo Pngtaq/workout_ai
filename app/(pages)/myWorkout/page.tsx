@@ -3,6 +3,7 @@
 import { useGetWorkout } from "@/hooks/workoutHooks";
 import { motion } from "framer-motion";
 import OverviewItem from "@/components/ui/myworkout/OverviewItem";
+import WorkoutList from "@/components/ui/myworkout/WorkoutList";
 
 export default function Page() {
   const { data, isLoading, error } = useGetWorkout();
@@ -52,8 +53,34 @@ export default function Page() {
           <OverviewItem label="Diet Tip" value={data.data.overview.dietTip} />
         </div>
       </motion.section>
+
+      <motion.section
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.1, duration: 0.4 }}
+        className="space-y-6"
+      >
+        <h2 className="text-2xl font-bold bg-gradient-to-r from-violet-500 to-violet-700 bg-clip-text text-transparent">
+          Daily Workouts
+        </h2>
+        <div className="grid gap-6 md:grid-cols-2">
+          {data.days.map((day, index) => (
+            <motion.div
+              key={index}
+              whileHover={{ scale: 1.02 }}
+              transition={{ type: "spring", stiffness: 200 }}
+              className="bg-white rounded-2xl shadow-md p-6 border border-gray-100 hover:shadow-xl transition-shadow"
+            >
+              <h3 className="font-semibold text-lg text-violet-600 mb-4">
+                {day.day}
+              </h3>
+              <WorkoutList title="Warmup" items={day.warmup} />
+              <WorkoutList title="Main Workout" items={day.mainWorkout} />
+              <WorkoutList title="Cooldown" items={day.cooldown} />
+            </motion.div>
+          ))}
+        </div>
+      </motion.section>
     </div>
   );
 }
-
-/* Reusable Components */
