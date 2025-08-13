@@ -2,6 +2,7 @@
 
 import { useGetWorkout } from "@/hooks/workoutHooks";
 import { motion } from "framer-motion";
+import OverviewItem from "@/components/ui/myworkout/OverviewItem";
 
 export default function Page() {
   const { data, isLoading, error } = useGetWorkout();
@@ -29,5 +30,30 @@ export default function Page() {
     );
   }
 
-  return <div></div>;
+  return (
+    <div className="p-4 sm:p-6 lg:p-8 space-y-8">
+      {/* Overview */}
+      <motion.section
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+        className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100"
+      >
+        <h2 className="text-2xl font-bold bg-gradient-to-r from-violet-500 to-violet-700 bg-clip-text text-transparent mb-6">
+          Workout Overview
+        </h2>
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 text-sm text-gray-700">
+          <OverviewItem
+            label="Days per Week"
+            value={data.data.overview.daysPerWeek}
+          />
+          <OverviewItem label="Duration" value={data.data.overview.duration} />
+          <OverviewItem label="Focus" value={data.data.overview.focus} />
+          <OverviewItem label="Diet Tip" value={data.data.overview.dietTip} />
+        </div>
+      </motion.section>
+    </div>
+  );
 }
+
+/* Reusable Components */
