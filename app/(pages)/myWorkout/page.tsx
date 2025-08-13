@@ -6,6 +6,12 @@ import OverviewItem from "@/components/ui/myworkout/OverviewItem";
 import WorkoutList from "@/components/ui/myworkout/WorkoutList";
 import DietList from "@/components/ui/myworkout/DietList";
 
+type WorkoutDay = {
+  day: string;
+  warmup: string[];
+  mainWorkout: string[];
+  cooldown: string[];
+};
 export default function Page() {
   const { data, isLoading, error } = useGetWorkout();
   console.log(data);
@@ -65,7 +71,7 @@ export default function Page() {
           Daily Workouts
         </h2>
         <div className="grid gap-6 md:grid-cols-2">
-          {data.data.days.map((day, index) => (
+          {data.data.days.map((day: WorkoutDay, index: number) => (
             <motion.div
               key={index}
               whileHover={{ scale: 1.02 }}
