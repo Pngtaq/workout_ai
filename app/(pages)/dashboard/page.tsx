@@ -3,6 +3,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { InfoRow } from "@/components/ui/InfoRow";
+import { OverviewItem } from "@/components/ui/OverviewItem";
 export default function Dashboard() {
   const { data, isLoading, error } = useQuery({
     queryKey: ["userDashboard"],
@@ -30,21 +31,41 @@ export default function Dashboard() {
   const user = data?.data;
 
   return (
-    <section className="bg-white rounded-xl shadow p-6 border border-gray-100">
-      <h2 className="text-2xl font-bold text-violet-500 mb-4">
-        Profile Overview
-      </h2>
-      <div className="grid md:grid-cols-2 gap-4 text-gray-700">
-        <InfoRow label="Name" value={`${user.firstName} ${user.lastName}`} />
-        <InfoRow label="Age" value={user.age} />
-        <InfoRow label="Gender" value={user.gender} />
-        <InfoRow
-          label="Height"
-          value={`${user.heightInFeet} ft ${user.heightInInches} in`}
-        />
-        <InfoRow label="Weight" value={`${user.weight} lbs`} />
-        <InfoRow label="BMI" value={`${user.bmi} (${user.bmiEquivalent})`} />
+    <div>
+      <section className="bg-white rounded-xl shadow p-6 border border-gray-100">
+        <h2 className="text-2xl font-bold text-violet-500 mb-4">
+          Profile Overview
+        </h2>
+        <div className="grid md:grid-cols-2 gap-4 text-gray-700">
+          <InfoRow label="Name" value={`${user.firstName} ${user.lastName}`} />
+          <InfoRow label="Age" value={user.age} />
+          <InfoRow label="Gender" value={user.gender} />
+          <InfoRow
+            label="Height"
+            value={`${user.heightInFeet} ft ${user.heightInInches} in`}
+          />
+          <InfoRow label="Weight" value={`${user.weight} lbs`} />
+          <InfoRow label="BMI" value={`${user.bmi} (${user.bmiEquivalent})`} />
+        </div>
+      </section>
+
+      <div className="flex flex-col items-center p-4 bg-gray-50 rounded-lg border border-gray-200">
+        <p className="text-lg font-semibold text-gray-500">Workout Overview</p>
+        <div className="mt-3 space-y-1 text-center">
+          <OverviewItem
+            label="Days per Week"
+            value={user?.workout?.overview?.daysPerWeek ?? "-"}
+          />
+          <OverviewItem
+            label="Duration"
+            value={user?.workout?.overview?.duration ?? "-"}
+          />
+          <OverviewItem
+            label="Focus"
+            value={user?.workout?.overview?.focus ?? "-"}
+          />
+        </div>
       </div>
-    </section>
+    </div>
   );
 }
