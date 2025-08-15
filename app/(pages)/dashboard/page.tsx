@@ -4,6 +4,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { InfoRow } from "@/components/ui/InfoRow";
 import { OverviewItem } from "@/components/ui/OverviewItem";
+import { Clock } from "@/components/ui/Clock";
+import { Timer } from "@/components/ui/Timer";
 export default function Dashboard() {
   const { data, isLoading, error } = useQuery({
     queryKey: ["userDashboard"],
@@ -66,6 +68,17 @@ export default function Dashboard() {
           />
         </div>
       </div>
+
+      <section className="bg-white rounded-xl shadow p-6 border border-gray-100">
+        <h2 className="text-2xl font-bold text-violet-500 mb-6">
+          Fitness Dashboard
+        </h2>
+        <div className="grid md:grid-cols-3 gap-6">
+          <Clock />
+
+          <Timer />
+        </div>
+      </section>
     </div>
   );
 }
