@@ -6,6 +6,8 @@ import { Clock } from "@/components/ui/Clock";
 import { OverviewItem } from "@/components/ui/OverviewItem";
 import { Timer } from "@/components/ui/Timer";
 
+import LoaderSpinner from "@/components/ui/LoaderSpin";
+
 export default function Dashboard() {
   const { data, isLoading, error } = useQuery({
     queryKey: ["userDashboard"],
@@ -18,7 +20,9 @@ export default function Dashboard() {
 
   if (isLoading) {
     return (
-      <div className="p-6 text-center text-gray-500">Loading dashboard...</div>
+      <div className="absolute left-1/2 top-1/2">
+        <LoaderSpinner />
+      </div>
     );
   }
 
