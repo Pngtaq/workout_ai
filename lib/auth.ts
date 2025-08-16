@@ -28,8 +28,8 @@ type Tprofile = {
 const authConfig: NextAuthConfig = {
   providers: [
     Google({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      clientId: process.env.AUTH_CLIENT_ID!,
+      clientSecret: process.env.AUTH_CLIENT_SECRET!,
     }),
   ],
 
@@ -41,7 +41,7 @@ const authConfig: NextAuthConfig = {
       const typedProfile = profile as Tprofile | undefined;
       if (!typedProfile) return false;
 
-      const res = await fetch("/api/user", {
+      const res = await fetch(`${process.env.NEXTAUTH_URL}/api/user`, {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
