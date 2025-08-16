@@ -41,7 +41,7 @@ const authConfig: NextAuthConfig = {
       const typedProfile = profile as Tprofile | undefined;
       if (!typedProfile) return false;
 
-      const res = await fetch(`${process.env.NEXTAUTH_URL}/api/user`, {
+      const res = await fetch("/api/user", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
