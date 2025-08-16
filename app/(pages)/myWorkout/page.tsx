@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import OverviewItem from "@/components/ui/myworkout/OverviewItem";
 import WorkoutList from "@/components/ui/myworkout/WorkoutList";
 import DietList from "@/components/ui/myworkout/DietList";
+import LoaderSpin from "@/components/ui/LoaderSpin";
 
 type WorkoutDay = {
   day: string;
@@ -18,9 +19,9 @@ export default function Page() {
 
   if (isLoading) {
     return (
-      <p className="text-center text-gray-500 py-10 animate-pulse">
-        Loading workout plan...
-      </p>
+      <div className="absolute left-1/2 top-1/2">
+        <LoaderSpin />
+      </div>
     );
   }
 
