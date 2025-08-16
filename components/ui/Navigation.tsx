@@ -6,17 +6,15 @@ import Link from "next/link";
 import { navData } from "@/data/navData";
 import NavLink from "./NavLink";
 import { usePathname } from "next/navigation";
-import { useQuery } from "@tanstack/react-query";
-import { getUserInfo } from "@/services/user";
+// import { useQuery } from "@tanstack/react-query";
+import { useGetUser } from "@/hooks/userHooks";
 
 export default function Navigation() {
   const pathName = usePathname();
-  const { data: user, error } = useQuery({
-    queryKey: ["user"],
-    queryFn: getUserInfo,
-  });
+  const { data: user, isLoading, error } = useGetUser();
 
-  if (error) return <p>Error loading user</p>;
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
 
   return (
     <aside
@@ -48,7 +46,7 @@ export default function Navigation() {
             <p className="text-[11px] mt-0.5">
               <span>Your state:</span>{" "}
               <span className="bg-violet-600 font-semibold text-white rounded-full px-2 py-[1px]">
-                {user?.bmiEquivalent || "Unknown"}
+                {user?.data.bmiEquivalent || "Unknown"}
               </span>
             </p>
           </div>
@@ -70,18 +68,18 @@ export default function Navigation() {
       </div>
 
       {/* Bottom Section */}
-      {user?.firstName ? (
+      {user?.data.firstName ? (
         <div className="border-t border-gray-200 pt-6 w-full text-sm">
           <div className="flex items-center gap-x-4 mb-4">
             <Image
-              src={user.image || "/icons/user-dark.png"}
+              src={user.data.image || "/icons/user-dark.png"}
               width={40}
               height={40}
               alt="user"
               referrerPolicy="no-referrer"
               className="rounded-full border-2 border-violet-500"
             />
-            <p className="hidden sm:inline">{user.firstName}</p>
+            <p className="hidden sm:inline">{user.data.firstName}</p>
           </div>
           <form action={signOutAction}>
             <button

@@ -11,14 +11,14 @@ type TUserProps = {
   image: string;
 };
 
-export async function getUserInfo() {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+// export async function getUserInfo() {
+//   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
-  const res = await fetch(`${baseUrl}/api/user`, {
-    method: "GET",
-  });
+//   const res = await fetch(`${baseUrl}/api/user`, {
+//     method: "GET",
+//   });
 
-  if (!res.ok) throw new Error(`Failed to fetch: ${res.status}`);
-  const data = await res.json();
-  return data.data;
-}
+//   if (!res.ok) throw new Error(`Failed to fetch: ${res.status}`);
+//   const data = await res.json();
+//   return data.data;
+// }

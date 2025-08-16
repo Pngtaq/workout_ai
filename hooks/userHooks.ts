@@ -17,13 +17,15 @@ export function useUpdateUser() {
   });
 }
 
-export function useGetWorkout() {
+export function useGetUser() {
   return useQuery({
-    queryKey: ["workout"],
+    queryKey: ["user"],
     queryFn: async () => {
-      const res = await fetch("/api/createWorkout", { method: "GET" });
-      if (!res.ok) throw new Error("Failed to fetch workout");
-      return res.json();
+      const res = await fetch("/api/user", { method: "GET" });
+
+      if (!res.ok) throw new Error("Failed to fetch user");
+
+      return res.json(); // returns { data: user }
     },
   });
 }
