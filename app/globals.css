@@ -33,3 +33,18 @@ body {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+
+/* HTML: <div class="loader"></div> */
+.loader {
+  width: 4rem;
+  height: 10px;
+  background: linear-gradient(90deg, #c4b5fd 33%, #9978fb 50%, #c4b5fd 66%)
+    #f2f2f2;
+  background-size: 300% 100%;
+  animation: l1 1s infinite linear;
+}
+@keyframes l1 {
+  0% {
+    background-position: right;
+  }
+}

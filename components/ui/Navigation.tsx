@@ -8,12 +8,12 @@ import NavLink from "./NavLink";
 import { usePathname } from "next/navigation";
 // import { useQuery } from "@tanstack/react-query";
 import { useGetUser } from "@/hooks/userHooks";
+import Loader from "@/components/ui/Loader";
 
 export default function Navigation() {
   const pathName = usePathname();
   const { data: user, isLoading, error } = useGetUser();
 
-  if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
   return (
@@ -43,12 +43,16 @@ export default function Navigation() {
           </Link>
           <div className="hidden sm:flex flex-col">
             <p className="font-medium">Workout Ai</p>
-            <p className="text-[11px] mt-0.5">
-              <span>Your state:</span>{" "}
-              <span className="bg-violet-600 font-semibold text-white rounded-full px-2 py-[1px]">
-                {user?.data.bmiEquivalent || "Unknown"}
-              </span>
-            </p>
+            <div className="text-[11px] mt-0.5 flex justif-center items-center gap-x-1">
+              <span>Your state:</span>
+              {isLoading ? (
+                <Loader />
+              ) : (
+                <span className="bg-violet-600 font-semibold text-white rounded-full px-2 py-[1px]">
+                  {user?.data?.bmiEquivalent}
+                </span>
+              )}
+            </div>
           </div>
         </div>
 
@@ -81,6 +85,7 @@ export default function Navigation() {
             />
             <p className="hidden sm:inline">{user.data.firstName}</p>
           </div>
+
           <form action={signOutAction}>
             <button
               type="submit"
