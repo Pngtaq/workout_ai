@@ -113,7 +113,7 @@ ${day.day}
 
       {/* Chat Area */}
       <main
-        className="flex-1 overflow-y-auto px-4 md:px-8 py-6 flex flex-col gap-4 max-w-3xl w-full self-center"
+        className="flex-1 overflow-y-auto px-4 md:px-8 py-6 flex flex-col gap-4 max-w-5xl w-full self-center bg-gray-50 rounded-lg"
         style={{
           scrollbarWidth: "none",
           msOverflowStyle: "none",
@@ -149,7 +149,7 @@ ${day.day}
 
         {/* AI Response bubble */}
         {days && overview && plan && (
-          <div className="bg-gray-200 rounded-2xl px-4 py-3 max-w-[80%] self-start text-sm space-y-3">
+          <div className="bg-gray-200 rounded-2xl px-4 py-3 w-[80%] self-start text-sm space-y-3">
             <pre className="whitespace-pre-wrap text-sm">
               <Typewriter
                 options={{ delay: 20 }}
