@@ -6,7 +6,6 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import Typewriter from "typewriter-effect";
 import { TCreateWorkoutProps, TWorkout } from "@/types/next-auth";
-
 import { useSaveWorkout } from "@/hooks/workoutHooks";
 
 export default function Page() {
@@ -75,6 +74,7 @@ ${day.day}
     setDietTips(parsed.dietTips);
     setOverview(parsed.overview);
   };
+
   const submitForm = handleSubmit((data) => {
     setText(data);
 
@@ -87,8 +87,6 @@ ${day.day}
 
   const saveWorkout = useSaveWorkout();
   const submitWorkout = () => {
-    alert("domo");
-    console.log(plan);
     if (plan) {
       saveWorkout.mutate(plan);
     } else {
@@ -96,85 +94,13 @@ ${day.day}
     }
   };
 
-  // if (!plan) return <p>Loading...</p>;
   return (
-    <div className="grid grid-cols-2 grid-rows-[30px_1fr] gap-4 lg:grid-cols-[120px_1fr_40px] lg:grid-rows-1 items-start p-4 h-full">
-      {/* Left: Header */}
-
-      <div className="order-1 md:order-1">
-        <h1 className="text-sm font-extralight bg-violet-600 text-white p-1 text-center rounded-md ">
+    <div className="flex flex-col h-screen w-full bg-white">
+      {/* Header */}
+      <header className="p-3  flex items-center justify-between">
+        <h1 className="text-sm font-light bg-violet-600 text-white px-3 py-1 rounded-md">
           Create Workout
         </h1>
-      </div>
-
-      {/* Middle: Form and Typewriter */}
-      <div className="order-3 md:order-2 col-span-2 lg:col-span-1 row-start-2 lg:row-start-auto flex flex-col justify-between h-full w-full sm:max-h-100 md:max-h-150 lg:max-h-240 space-y-3  md:px-10 pt-10 py-5 max-w-280 bg-gray-50 rounded-2xl justify-self-center">
-        <div
-          className="px-2 space-y-3 grid-cols-1 overflow-y-auto text-sm tracking-wider"
-          style={{
-            scrollbarWidth: "none", // Firefox
-            msOverflowStyle: "none", // IE/Edge
-          }}
-        >
-          <div className="bg-gray-300 rounded-2xl px-2 py-2 max-w-1/5 text-center ">
-            Let’s build your workout!
-          </div>
-          {text && (
-            <div className="justify-self-end bg-violet-500 rounded-2xl px-2 py-2 max-w-1/2 text-white ">
-              <h3 className=" font-semibold">Workout Summary</h3>
-              <div className="flex flex-wrap flex-col">
-                <div className="flex-1">
-                  <span className="font-bold">Equipments & Prompt: </span>
-                  {text?.prompt}
-                </div>
-                <div>
-                  <div>
-                    <span className="font-bold">Days: </span> {text?.days}
-                  </div>
-                  <div>
-                    <span className="font-bold">Difficulty: </span>
-                    {text?.difficulty}
-                  </div>
-                  <div>
-                    <span className="font-bold">Type of Diet: </span>{" "}
-                    {text?.diet}
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {days && overview && plan && (
-            <div className="bg-gray-300 rounded-2xl px-2 py-2 max-w-1/2 text-sm space-y-2 grid">
-              <pre className="whitespace-pre-wrap text-sm">
-                <Typewriter
-                  options={{ delay: 20 }}
-                  onInit={(typewriter) => {
-                    typewriter.typeString(summary).start();
-                  }}
-                />
-              </pre>
-              <button
-                className="justify-self-end mr-1 rounded-sm hover:bg-gray-400 p-1"
-                onClick={submitWorkout}
-              >
-                <Image
-                  width={20}
-                  height={20}
-                  src="/icons/copy-dark.png"
-                  alt="copy"
-                />
-                Save Workout
-              </button>
-            </div>
-          )}
-        </div>
-
-        <CreateWorkOutForm submitForm={submitForm} register={register} />
-      </div>
-
-      {/* Right: Delete Button */}
-      <div className="order-2 md:order-3 flex justify-end">
         <button className="rounded-md bg-violet-600 flex gap-x-2 p-1">
           <Image
             src="/icons/bin-light.png"
@@ -183,7 +109,77 @@ ${day.day}
             alt="delete"
           />
         </button>
-      </div>
+      </header>
+
+      {/* Chat Area */}
+      <main
+        className="flex-1 overflow-y-auto px-4 md:px-8 py-6 flex flex-col gap-4 max-w-3xl w-full self-center"
+        style={{
+          scrollbarWidth: "none",
+          msOverflowStyle: "none",
+        }}
+      >
+        {/* System intro message */}
+        <div className="bg-gray-200 rounded-2xl px-4 py-2 text-center w-fit self-start">
+          Let’s build your workout!
+        </div>
+
+        {/* User summary bubble */}
+        {text && (
+          <div className="bg-violet-500 text-white rounded-2xl px-4 py-3 max-w-[80%] self-end">
+            <h3 className="font-semibold mb-1">Workout Summary</h3>
+            <p>
+              <span className="font-bold">Equipments & Prompt: </span>
+              {text?.prompt}
+            </p>
+            <p>
+              <span className="font-bold">Days: </span>
+              {text?.days}
+            </p>
+            <p>
+              <span className="font-bold">Difficulty: </span>
+              {text?.difficulty}
+            </p>
+            <p>
+              <span className="font-bold">Diet: </span>
+              {text?.diet}
+            </p>
+          </div>
+        )}
+
+        {/* AI Response bubble */}
+        {days && overview && plan && (
+          <div className="bg-gray-200 rounded-2xl px-4 py-3 max-w-[80%] self-start text-sm space-y-3">
+            <pre className="whitespace-pre-wrap text-sm">
+              <Typewriter
+                options={{ delay: 20 }}
+                onInit={(typewriter) => {
+                  typewriter.typeString(summary).start();
+                }}
+              />
+            </pre>
+            <button
+              className="rounded-md hover:bg-gray-300 px-2 py-1 flex items-center gap-2 text-xs bg-gray-300 "
+              onClick={submitWorkout}
+            >
+              <Image
+                width={20}
+                height={20}
+                src="/icons/copy-dark.png"
+                alt="copy"
+              />
+              Save
+            </button>
+          </div>
+        )}
+      </main>
+
+      {/* Fixed Input */}
+      <footer className="py-4 px-2 bg-white shadow-gray-600 shadow-2xl">
+        <div className="max-w-3xl w-full mx-auto">
+          <CreateWorkOutForm submitForm={submitForm} register={register} />
+        </div>
+      </footer>
     </div>
   );
 }
