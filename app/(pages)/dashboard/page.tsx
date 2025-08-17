@@ -37,8 +37,7 @@ export default function Dashboard() {
   const user = data?.data;
 
   return (
-    <div className="p-6 space-y-8">
-      {/* Profile Overview */}
+    <div className="p-4 space-y-8 w-[90%] ">
       <section className="bg-white rounded-xl shadow p-6 border border-gray-100">
         <h2 className="text-2xl font-bold text-violet-500 mb-4">
           Profile Overview
@@ -57,7 +56,6 @@ export default function Dashboard() {
         </div>
       </section>
 
-      {/* Workout Overview */}
       <section className="bg-white rounded-xl shadow p-6 border border-gray-100">
         <h2 className="text-2xl font-bold text-violet-500 mb-4">
           Workout Overview
