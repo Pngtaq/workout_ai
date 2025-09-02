@@ -10,10 +10,34 @@ let isConnected = false;
 
 export async function connectDb() {
   if (isConnected) return;
+  
   try {
-    await mongoose.connect(MONGODB_URI, { dbName: "workoutDb" });
+    await mongoose.connect(MONGODB_URI, { 
+      dbName: "workoutDb",
+      // Add connection pooling for better performance
+      maxPoolSize: 10,
+      minPoolSize: 2,
+      // Reduce connection timeout
+      serverSelectionTimeoutMS: 5000,
+      // Enable connection pooling
+      bufferCommands: false,
+      bufferMaxEntries: 0,
+    });
     isConnected = true;
+    console.log("Database connected successfully");
   } catch (err) {
     console.error("DB connection error", err);
+    isConnected = false;
+    throw err;
   }
 }
+
+// Graceful shutdown
+process.on('SIGINT', async () => {
+  if (isConnected) {
+    await mongoose.connection.close();
+    console.log('Database connection closed');
+    process.exit(0);
+  }
+});
+

@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const UserSchema = new mongoose.Schema({
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
-  email: { type: String, unique: true },
+  email: { type: String, unique: true, index: true }, // Add index for faster lookups
   weight: Number,
   bmi: Number,
   bmiEquivalent: String,
@@ -38,5 +38,11 @@ const UserSchema = new mongoose.Schema({
     },
   },
 });
+
+// Add compound index for better query performance
+UserSchema.index({ email: 1, updatedAt: -1 });
+
+// Add text index for search functionality (if needed in future)
+// UserSchema.index({ firstName: 'text', lastName: 'text' });
 
 export const User = mongoose.models.User || mongoose.model("User", UserSchema);

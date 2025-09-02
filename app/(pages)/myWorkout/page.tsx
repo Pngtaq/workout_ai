@@ -15,7 +15,6 @@ type WorkoutDay = {
 };
 export default function Page() {
   const { data, isLoading, error } = useGetWorkout();
-  console.log(data);
 
   if (isLoading) {
     return (

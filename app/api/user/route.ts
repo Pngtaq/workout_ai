@@ -10,10 +10,18 @@ export async function GET() {
 
     if (!session || !session.user)
       return NextResponse.json({ error: "Session not found" }, { status: 401 });
+    
     await connectDb();
+    
+    // Use projection to only fetch needed fields
     const user = await User.findOne(
       { email: session.user.email },
-      { _id: 0, email: 0 }
+      { 
+        _id: 0, 
+        email: 0,
+        createdAt: 0,
+        __v: 0 
+      }
     ).lean();
 
     if (!user)
@@ -21,8 +29,8 @@ export async function GET() {
 
     return NextResponse.json({ data: user }, { status: 200 });
   } catch (error) {
-    console.log(error);
-    return NextResponse.json({ error: error }, { status: 501 });
+    console.error("GET /api/user error:", error);
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
 
@@ -32,7 +40,9 @@ export async function POST(req: NextRequest) {
     const { firstName, lastName, email, image } = body;
 
     await connectDb();
-    const existingUser = await User.findOne({ email });
+    
+    // Use findOneAndUpdate with upsert for better performance
+    const existingUser = await User.findOne({ email }).lean();
 
     if (existingUser) {
       return NextResponse.json(
@@ -46,7 +56,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ user }, { status: 201 });
   } catch (err) {
-    console.error("Error creating user:", err);
+    console.error("POST /api/user error:", err);
     return NextResponse.json(
       { error: "Failed to create user" },
       { status: 500 }
@@ -57,7 +67,6 @@ export async function POST(req: NextRequest) {
 export async function PATCH(req: NextRequest) {
   try {
     const session = await auth();
-    console.log(session);
     if (!session || !session?.user?.email) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
@@ -66,21 +75,33 @@ export async function PATCH(req: NextRequest) {
 
     const body = await req.json();
     const { heightInFeet, heightInInches, weight } = body;
-    const user = await User.findOne({ email: session?.user.email });
+    
+    // Calculate BMI before update
+    const bmi = (weight * 703) / (heightInFeet * 12 + heightInInches) ** 2;
+    const bmiEquivalent = getBMICategory(bmi);
+    
+    // Use findOneAndUpdate for better performance and atomicity
+    const user = await User.findOneAndUpdate(
+      { email: session.user.email },
+      {
+        ...body,
+        bmi: parseFloat(bmi.toFixed(1)),
+        bmiEquivalent,
+        updatedAt: Date.now(),
+      },
+      { 
+        new: true,
+        projection: { _id: 0, email: 0, createdAt: 0, __v: 0 }
+      }
+    );
+    
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    Object.assign(user, body);
-    const bmi = (weight * 703) / (heightInFeet * 12 + heightInInches) ** 2;
-    user.bmi = parseFloat(bmi.toFixed(1));
-    user.bmiEquivalent = getBMICategory(bmi);
-    user.updatedAt = Date.now();
-    await user.save();
-
     return NextResponse.json({ data: user }, { status: 200 });
   } catch (err) {
-    console.error("PATCH error:", err);
+    console.error("PATCH /api/user error:", err);
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 }

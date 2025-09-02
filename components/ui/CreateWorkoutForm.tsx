@@ -7,20 +7,25 @@ import { TCreateWorkoutProps } from "@/types/next-auth";
 type CreateWorkoutFormProps = {
   register: UseFormRegister<TCreateWorkoutProps>;
   submitForm: React.FormEventHandler<HTMLFormElement>;
+  isLoading?: boolean;
 };
 
 const CreateWorkOutForm = ({
   register,
   submitForm,
+  isLoading = false,
 }: CreateWorkoutFormProps) => {
   return (
     <form onSubmit={submitForm} className="px-4 py-6 rounded-4xl bg-gray-300">
       <div className="flex justify-between items-center gap-x-2">
-        <InputTag register={register} />
+        <InputTag register={register} disabled={isLoading} />
         <div className="">
           <button
             type="submit"
-            className="rounded-full bg-gray-500 text-white w-8 py-2 flex items-center justify-center gap-x-1"
+            disabled={isLoading}
+            className={`rounded-full text-white w-8 py-2 flex items-center justify-center gap-x-1 ${
+              isLoading ? 'bg-gray-400 cursor-not-allowed' : 'bg-gray-500 hover:bg-gray-600'
+            }`}
           >
             <Image
               src="/icons/arrow-light.png"
@@ -42,6 +47,7 @@ const CreateWorkOutForm = ({
             name="days"
             className="px-2 focus:outline-0"
             defaultValue="1"
+            disabled={isLoading}
           >
             <option value="1">1</option>
             <option value="2">2</option>
@@ -61,6 +67,7 @@ const CreateWorkOutForm = ({
             name="difficulty"
             className="focus:outline-0"
             defaultValue="light"
+            disabled={isLoading}
           >
             <option value="light">Light</option>
             <option value="medium">Medium</option>
@@ -76,6 +83,7 @@ const CreateWorkOutForm = ({
             name="diet"
             className="px-2 focus:outline-0"
             defaultValue="balanced"
+            disabled={isLoading}
           >
             <option value="balanced">Balanced</option>
             <option value="high-protein">High-Protein</option>
