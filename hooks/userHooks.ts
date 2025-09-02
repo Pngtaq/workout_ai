@@ -27,5 +27,13 @@ export function useGetUser() {
 
       return res.json(); // returns { data: user }
     },
+    // User data is considered fresh for 10 minutes
+    staleTime: 10 * 60 * 1000, // 10 minutes
+    // Don't refetch on window focus
+    refetchOnWindowFocus: false,
+    // Don't refetch on reconnect
+    refetchOnReconnect: false,
+    // Cache the data for 30 minutes
+    gcTime: 30 * 60 * 1000, // 30 minutes (formerly cacheTime)
   });
 }

@@ -5,9 +5,10 @@ import { UseFormRegister } from "react-hook-form";
 
 type InputTagProps = {
   register: UseFormRegister<TCreateWorkoutProps>;
+  disabled?: boolean;
 };
 
-const InputTag = ({ register }: InputTagProps) => {
+const InputTag = ({ register, disabled = false }: InputTagProps) => {
   const [tags, setTags] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState("");
 
@@ -37,7 +38,10 @@ const InputTag = ({ register }: InputTagProps) => {
           {...register("prompt")}
           onKeyDown={handleKeyDown}
           placeholder="Provide equipments and other things you want to add"
-          className="flex-1 min-w-[100px] border-none outline-none py-1 px-2"
+          className={`flex-1 min-w-[100px] border-none outline-none py-1 px-2 ${
+            disabled ? 'bg-gray-100 cursor-not-allowed' : ''
+          }`}
+          disabled={disabled}
         />
       </div>
     </div>

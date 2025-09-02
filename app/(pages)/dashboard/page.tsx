@@ -1,22 +1,14 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
 import { InfoRow } from "@/components/ui/InfoRow";
 import { Clock } from "@/components/ui/Clock";
 import { OverviewItem } from "@/components/ui/OverviewItem";
 import { Timer } from "@/components/ui/Timer";
-
+import { useGetUser } from "@/hooks/userHooks";
 import LoaderSpinner from "@/components/ui/LoaderSpin";
 
 export default function Dashboard() {
-  const { data, isLoading, error } = useQuery({
-    queryKey: ["userDashboard"],
-    queryFn: async () => {
-      const res = await fetch("/api/user");
-      if (!res.ok) throw new Error("Failed to fetch user data");
-      return res.json();
-    },
-  });
+  const { data, isLoading, error } = useGetUser();
 
   if (isLoading) {
     return (
