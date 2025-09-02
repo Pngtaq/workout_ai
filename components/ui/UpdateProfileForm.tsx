@@ -4,6 +4,7 @@ import UpdateProfileInput from "./UpdateProfileInput";
 import { useForm } from "react-hook-form";
 import { TUserProfileFormData } from "@/types/next-auth";
 import { useUpdateUser } from "@/hooks/userHooks";
+import toast from "react-hot-toast";
 
 export default function UpdateProfileForm() {
   const { reset, register, handleSubmit } = useForm<TUserProfileFormData>({
@@ -12,10 +13,23 @@ export default function UpdateProfileForm() {
     },
   });
   const updateUser = useUpdateUser();
+  
   const onSubmit = handleSubmit((data) => {
+    // Show loading toast
+    const loadingToast = toast.loading("Updating your profile...");
+    
     updateUser.mutate(data, {
       onSuccess: () => {
+        // Dismiss loading toast and show success
+        toast.dismiss(loadingToast);
+        toast.success("Profile updated successfully!");
         reset();
+      },
+      onError: (error) => {
+        // Dismiss loading toast and show error
+        toast.dismiss(loadingToast);
+        toast.error("Failed to update profile. Please try again.");
+        console.error("Update profile error:", error);
       },
     });
   });
@@ -68,8 +82,15 @@ export default function UpdateProfileForm() {
           />
         </div>
 
-        <button className="bg-violet-500 rounded-[2px] text-md px-4 py-2 text-white w-full font-bold">
-          Submit
+        <button 
+          className={`bg-violet-500 rounded-[2px] text-md px-4 py-2 text-white w-full font-bold transition-colors ${
+            updateUser.isPending 
+              ? 'bg-violet-400 cursor-not-allowed' 
+              : 'hover:bg-violet-600'
+          }`}
+          disabled={updateUser.isPending}
+        >
+          {updateUser.isPending ? "Updating..." : "Submit"}
         </button>
       </div>
     </form>
