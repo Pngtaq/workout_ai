@@ -57,7 +57,7 @@ export class PerformanceMonitor {
 }
 
 // Performance wrapper for API routes
-export function withPerformanceMonitoring<T extends any[], R>(
+export function withPerformanceMonitoring<T extends unknown[], R>(
   operation: string,
   fn: (...args: T) => Promise<R>
 ): (...args: T) => Promise<R> {

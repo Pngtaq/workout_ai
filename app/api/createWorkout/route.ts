@@ -3,11 +3,36 @@ import { User } from "@/schemas/User";
 import { connectDb } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
 
+// Define interface for user with workout
+interface UserWithWorkout {
+  workout?: {
+    days?: Array<{
+      day: string;
+      warmup: string[];
+      mainWorkout: string[];
+      cooldown: string[];
+    }>;
+    dietTips?: {
+      hydration: string;
+      meals: string[];
+      preWorkout: string[];
+      postWorkout: string[];
+    };
+    overview?: {
+      daysPerWeek?: number;
+      dietTip?: string;
+      duration?: string;
+      focus?: string;
+    };
+  };
+}
+
 export async function GET() {
   try {
     const session = await auth();
-    if (!session)
+    if (!session || !session.user?.email) {
       return NextResponse.json({ message: "Not authorized" }, { status: 401 });
+    }
     
     await connectDb();
     
@@ -20,7 +45,10 @@ export async function GET() {
     if (!user)
       return NextResponse.json({ message: "User not found" }, { status: 401 });
     
-    const { workout } = user;
+    // Type assertion with proper interface
+    const userWithWorkout = user as UserWithWorkout;
+    const { workout } = userWithWorkout;
+    
     return NextResponse.json({ data: workout }, { status: 200 });
   } catch (error) {
     console.error("GET /api/createWorkout error:", error);

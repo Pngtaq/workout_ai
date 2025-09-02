@@ -28,7 +28,7 @@ export default function Providers({ children }: { children: ReactNode }) {
         retry: 3,
         retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
         // Enable optimistic updates for better UX
-        onMutate: async (variables) => {
+        onMutate: async () => {
           // Cancel any outgoing refetches
           await queryClient.cancelQueries({ queryKey: ["user"] });
           await queryClient.cancelQueries({ queryKey: ["workout"] });

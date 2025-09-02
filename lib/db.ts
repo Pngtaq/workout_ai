@@ -21,7 +21,6 @@ export async function connectDb() {
       serverSelectionTimeoutMS: 5000,
       // Enable connection pooling
       bufferCommands: false,
-      bufferMaxEntries: 0,
     });
     isConnected = true;
     console.log("Database connected successfully");

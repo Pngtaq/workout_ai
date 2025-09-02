@@ -55,6 +55,9 @@ export default function Page() {
 
   // Load cached data on component mount
   useEffect(() => {
+    // Only run on client side
+    if (typeof window === 'undefined') return;
+    
     try {
       const cachedPrompt = localStorage.getItem(STORAGE_KEYS.CURRENT_PROMPT);
       const cachedPlan = localStorage.getItem(STORAGE_KEYS.CURRENT_PLAN);
@@ -95,41 +98,62 @@ export default function Page() {
 
   // Save data to cache whenever it changes
   useEffect(() => {
+    // Only run on client side
+    if (typeof window === 'undefined') return;
+    
     if (text) {
       localStorage.setItem(STORAGE_KEYS.CURRENT_PROMPT, JSON.stringify(text));
     }
   }, [text]);
 
   useEffect(() => {
+    // Only run on client side
+    if (typeof window === 'undefined') return;
+    
     if (plan) {
       localStorage.setItem(STORAGE_KEYS.CURRENT_PLAN, JSON.stringify(plan));
     }
   }, [plan]);
 
   useEffect(() => {
+    // Only run on client side
+    if (typeof window === 'undefined') return;
+    
     if (days.length > 0) {
       localStorage.setItem(STORAGE_KEYS.CURRENT_DAYS, JSON.stringify(days));
     }
   }, [days]);
 
   useEffect(() => {
+    // Only run on client side
+    if (typeof window === 'undefined') return;
+    
     if (dietTips.hydration || dietTips.meals.length > 0 || dietTips.preWorkout.length > 0 || dietTips.postWorkout.length > 0) {
       localStorage.setItem(STORAGE_KEYS.CURRENT_DIET_TIPS, JSON.stringify(dietTips));
     }
   }, [dietTips]);
 
   useEffect(() => {
+    // Only run on client side
+    if (typeof window === 'undefined') return;
+    
     if (Object.keys(overview).length > 0) {
       localStorage.setItem(STORAGE_KEYS.CURRENT_OVERVIEW, JSON.stringify(overview));
     }
   }, [overview]);
 
   useEffect(() => {
+    // Only run on client side
+    if (typeof window === 'undefined') return;
+    
     localStorage.setItem(STORAGE_KEYS.IS_SAVED, JSON.stringify(isSaved));
   }, [isSaved]);
 
   // Function to clear cache
   const clearCache = () => {
+    // Only run on client side
+    if (typeof window === 'undefined') return;
+    
     Object.values(STORAGE_KEYS).forEach(key => {
       localStorage.removeItem(key);
     });
@@ -278,7 +302,7 @@ ${day.day}
           toast.success("Workout saved successfully!");
           // Don't clear cache after save - keep the data for navigation
         },
-        onError: (error) => {
+        onError: () => {
           toast.error("Failed to save workout. Please try again.");
         }
       });
@@ -332,7 +356,7 @@ ${day.day}
       >
         {/* System intro message */}
         <div className="bg-gray-200 rounded-2xl px-4 py-2 text-center w-fit self-start">
-          Let's build your workout!
+          Let&apos;s build your workout!
         </div>
 
         {/* Current user summary bubble */}
